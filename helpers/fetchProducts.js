@@ -8,7 +8,7 @@ const fetchProducts = async (QUERY) => {
     return error;
   }
 };
-
+// fetchProducts para criar uma listagem de produtos através da API do Mercado Livre.
 if (typeof module !== 'undefined') {
   module.exports = {
     fetchProducts,

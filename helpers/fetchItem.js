@@ -8,7 +8,7 @@ const fetchItem = async (ItemID) => {
     return error;
   }
 };
-
+// fetchItems para retornar dados de um produto e adicioná-lo ao carrinho.
 if (typeof module !== 'undefined') {
   module.exports = {
     fetchItem,
