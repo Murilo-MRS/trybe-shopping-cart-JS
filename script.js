@@ -1,6 +1,7 @@
 const cartItems = document.querySelector('.cart__items');
 const totalPrice = document.querySelector('.total-price');
 const btnEmptyCart = document.querySelector('.empty-cart');
+const items = document.querySelector('.items');
 
 let dataCartItems = [];
 
@@ -74,12 +75,21 @@ const createProductItemElement = ({ sku, name, image }) => {
   return section;
 };
 
+const addLoad = () => {
+  const elemento = createCustomElement('span', 'loading', 'carregando...');
+  items.appendChild(elemento);
+};
+const removeLoad = () => {
+  items.removeChild(items.firstChild);
+  items.style.innerText = '';
+};
 // listaDeItems cria lista de item de compras por fetchProducts apenda ao DOM
 const listaDeItems = async () => {
+  addLoad();
   const arrProducts = await fetchProducts('computador');
+  removeLoad();
   const { results } = arrProducts;
   results.forEach(({ id: sku, title: name, thumbnail: image }) => {
-    const items = document.querySelector('.items');
     const criaElementoCard = createProductItemElement({ sku, name, image });
     items.appendChild(criaElementoCard);
   });

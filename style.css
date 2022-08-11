@@ -152,6 +152,7 @@ body {
   background-color: rgb(249, 249, 246);
   cursor: pointer;
 }
+
 .cart div {
   display: flex;
   align-items: center;
