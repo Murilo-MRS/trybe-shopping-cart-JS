@@ -1,7 +1,8 @@
 const cartItems = document.querySelector('.cart__items');
 const totalPrice = document.querySelector('.total-price');
+const btnEmptyCart = document.querySelector('.empty-cart');
+
 let dataCartItems = [];
-// const btnEmptyCart = document.querySelector('.empty-cart');
 
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
@@ -16,7 +17,7 @@ const createCustomElement = (element, className, innerText) => {
   e.innerText = innerText;
   return e;
 };
-
+// SOMA OS PRECOS DOS ITENS NO CART
 const sumPrices = () => {
   const sum = dataCartItems.reduce((acc, curr) => acc + curr.salePrice, 0);
   totalPrice.innerText = `${Math.round(sum * 100) / 100}`;
@@ -56,8 +57,6 @@ const addTocart = async (event) => {
   cartItems.appendChild(elementCart);
   saveCartItems(JSON.stringify(dataCartItems));
   sumPrices();
-  // const strCaritems = JSON.stringify(cartItems.innerHTML);
-  // saveCartItems(strCaritems);
 };
 
 const createProductItemElement = ({ sku, name, image }) => {
@@ -92,13 +91,22 @@ const cartItemsOnUpdatedWindow = (arr) => {
     cartItems.appendChild(elementCartSaved);
   });
   sumPrices();
-  // saveCartItems(JSON.stringify(arrCartSavedList));
 };
+
+const emptyCartItem = () => {
+  localStorage.clear();
+  dataCartItems = [];
+  cartItems.innerHTML = '';
+  totalPrice.innerText = '0';
+  // saveCartItems(JSON.stringify(dataCartItems));
+};
+btnEmptyCart.addEventListener('click', emptyCartItem);
 
 window.onload = () => { 
   listaDeItems();
   dataCartItems = JSON.parse(getSavedCartItems()) || [];
   cartItemsOnUpdatedWindow(dataCartItems);
+  sumPrices();
   // const vasco = getSavedCartItems() || null;
   // cartItems.innerHTML = JSON.parse(vasco);
 };
