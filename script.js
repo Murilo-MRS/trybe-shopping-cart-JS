@@ -19,19 +19,20 @@ const createCustomElement = (element, className, innerText) => {
 const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
 
 // REMOVE elemento do shop cart ao clica-lo
-const cartItemClickListener = (event) => {
+const cartItemClickListener = (event, sku) => {
   // coloque seu código aqui
     event.target.remove();
-    const novoData = dataCartItems.filter((element) => element !== event.target);
-    console.log(novoData);
+    const indexRemove = dataCartItems.findIndex((element) => element.sku === sku);
+    dataCartItems.splice(indexRemove, 1);
     saveCartItems(JSON.stringify(dataCartItems));
+    console.log(indexRemove);
 };
 
 const createCartItemElement = ({ sku, name, salePrice }) => {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
-  li.addEventListener('click', cartItemClickListener);
+  li.addEventListener('click', (event) => cartItemClickListener(event, sku));
   return li;
 };
 
