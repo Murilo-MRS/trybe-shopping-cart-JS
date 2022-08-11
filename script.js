@@ -1,4 +1,5 @@
 const cartItems = document.querySelector('.cart__items');
+const dataCartItems = [];
 // const btnEmptyCart = document.querySelector('.empty-cart');
 
 const createProductImageElement = (imageSource) => {
@@ -43,6 +44,8 @@ const addTocart = async (event) => {
   };
   const elementCart = createCartItemElement(objResult);
   cartItems.appendChild(elementCart);
+  const strCaritems = JSON.stringify(cartItems.innerHTML);
+  saveCartItems(strCaritems);
 };
 
 const createProductItemElement = ({ sku, name, image }) => {
@@ -73,4 +76,6 @@ const listaDeItems = async () => {
 
 window.onload = () => { 
   listaDeItems();
+  const vasco = getSavedCartItems() || null;
+  cartItems.innerHTML = JSON.parse(vasco);
 };
