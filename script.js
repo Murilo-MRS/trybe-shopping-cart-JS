@@ -21,7 +21,7 @@ const createCustomElement = (element, className, innerText) => {
 // SOMA OS PRECOS DOS ITENS NO CART
 const sumPrices = () => {
   const sum = dataCartItems.reduce((acc, curr) => acc + curr.salePrice, 0);
-  totalPrice.innerText = `${Math.round(sum * 100) / 100}`;
+  totalPrice.innerText = `${sum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`;
 };
 
 // CAPTURA SKU DO ITEM CLICADO
