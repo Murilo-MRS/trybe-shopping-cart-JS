@@ -1,5 +1,5 @@
 const cartItems = document.querySelector('.cart__items');
-const dataCartItems = [];
+let dataCartItems = [];
 // const btnEmptyCart = document.querySelector('.empty-cart');
 
 const createProductImageElement = (imageSource) => {
@@ -15,15 +15,16 @@ const createCustomElement = (element, className, innerText) => {
   e.innerText = innerText;
   return e;
 };
-
+// CAPTURA SKU DO ITEM CLICADO
 const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
 
-// remove elemento do shop cart ao clica-lo
+// REMOVE elemento do shop cart ao clica-lo
 const cartItemClickListener = (event) => {
   // coloque seu código aqui
-  if (event.target.className === 'cart__item') {
     event.target.remove();
-  }
+    const novoData = dataCartItems.filter((element) => element !== event.target);
+    console.log(novoData);
+    saveCartItems(JSON.stringify(dataCartItems));
 };
 
 const createCartItemElement = ({ sku, name, salePrice }) => {
@@ -38,14 +39,16 @@ const addTocart = async (event) => {
   const skuClick = getSkuFromProductItem(event.target.parentElement);
   const selectedItem = await fetchItem(skuClick);
   const objResult = {
-    sku: skuClick,
+    sku: selectedItem.id,
     name: selectedItem.title,
     salePrice: selectedItem.price,
   };
+  dataCartItems.push(objResult);
   const elementCart = createCartItemElement(objResult);
   cartItems.appendChild(elementCart);
-  const strCaritems = JSON.stringify(cartItems.innerHTML);
-  saveCartItems(strCaritems);
+  saveCartItems(JSON.stringify(dataCartItems));
+  // const strCaritems = JSON.stringify(cartItems.innerHTML);
+  // saveCartItems(strCaritems);
 };
 
 const createProductItemElement = ({ sku, name, image }) => {
@@ -73,9 +76,19 @@ const listaDeItems = async () => {
     items.appendChild(criaElementoCard);
   });
 };
+// LISTA SALVA DO LOCALSTORAGE E CRIA ELEMENTOS NOVAMENTE NO SHOPPING CART
+const cartItemsOnUpdatedWindow = (arr) => {
+  arr.forEach((e) => {
+    const elementCartSaved = createCartItemElement(e);
+    cartItems.appendChild(elementCartSaved);
+  });
+  // saveCartItems(JSON.stringify(arrCartSavedList));
+};
 
 window.onload = () => { 
   listaDeItems();
-  const vasco = getSavedCartItems() || null;
-  cartItems.innerHTML = JSON.parse(vasco);
+  dataCartItems = JSON.parse(getSavedCartItems()) || [];
+  cartItemsOnUpdatedWindow(dataCartItems);
+  // const vasco = getSavedCartItems() || null;
+  // cartItems.innerHTML = JSON.parse(vasco);
 };
